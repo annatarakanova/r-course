@@ -1,0 +1,147 @@
+---
+title: "Data import"
+format: 
+  html:
+    embed-resources: true
+---
+
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+# data <- read_delim("data/data_csv.csv", delim = ",", n_max = 10) # read first 10 rows
+
+# data$Группа <- factor(data$Группа)
+# data$Пол <- factor(data$Пол)
+# data$`Группа крови` <- factor(data$`Группа крови`)
+
+# data
+```
+
+```{r}
+# write_delim(data, "out/data_csv.csv", delim = ",")
+# list.files("out")
+```
+
+```{r}
+# read_csv("data/data_csv.csv", skip = 0, n_max = 10) # разделитель — запятая
+# read_csv2("data/data_csv2.csv", skip = 0, n_max = 10) # разделитель — точка с запятой
+# t <- read_tsv("data/data_tsv.tsv", skip = 0) # разделитель — символ табуляции
+
+# nrow(t)
+```
+
+```{r}
+# write_csv(data, "out/data_csv.csv")
+# write_excel_csv(data, "out/data_csv.csv")
+# write_csv2(data, "out/data_csv2.csv")
+# write_excel_csv2(data, "out/data_csv2.csv")
+# write_tsv(data, "out/data_tsv.tsv")
+```
+
+```{r}
+# readxl::read_excel("data/data_excel.xlsx", sheet = "data")
+
+# openxlsx::write.xlsx(data, "out/data_excel.xlsx", colNames = TRUE)
+```
+
+```{r}
+# read_rds("data/data_rds.rds")
+
+# write_rds(data, "out/data_rds.rds")
+```
+
+```{r}
+# data
+
+# # Два способа как обратиться к столбцу
+# data$`Группа крови`
+# data[["Группа крови"]]
+
+# # as_tibble() - convert data.frame into tibble
+```
+
+```{r}
+# Ленивый ввод
+
+# tibble(
+#     var_first = 1:10,
+#     var_second = var_first^2
+# )
+```
+
+```{r}
+# tibble(
+#     var_first = 1:10,
+#     var_second = if_else(var_first < 5, var_first + 100, var_first)
+# )
+```
+
+```{r}
+# data |>
+#     add_column(just_column = "just values", .before = 1)
+
+# data |>
+#     add_row(Группа = "New group", Возраст = 100, .before = 1)
+
+# data |>
+#     mutate(ID = row_number())
+```
+
+```{r}
+data <- read_tsv("data/data_tsv.tsv", show_col_type = FALSE)
+
+data$Группа <- factor(data$Группа)
+data$Пол <- factor(data$Пол)
+data$`Группа крови` <- factor(
+    data$`Группа крови`,
+    levels = c("0 (I)", "A (II)", "B (III)", "AB (IV)")
+)
+
+data 
+```
+
+```{r}
+# data
+
+# data |> select(`Группа крови`, `Рост`) # выбор столбцов 
+
+# data |> select(starts_with("б")) # название столбца начинается с ...
+# data |> select(contains("_E1")) # столбец в названии содержит ...
+# data |> select(matches("_E\\d{1}")) # регулярное выражение (название содержит _E и любую одну цифру)
+
+# data |> select(where(is.numeric)) # берутся те столбцы, для которых TRUE
+# data |> select(where(function(x) is.numeric(x) && mean(x, na.rm = TRUE) > 10)) # в where можно вставлять более сложные функции
+
+# variables <- c("Базофилы_E1", "Эозинофилы_E1", "Гемоглобин_E1")
+# data |> select(all_of(variables)) # выбирает все столбцы из списка (если какого-то столбца нет, то выдаст ошибку)
+
+# variables_missing <- c(variables, "Имя отсутствующей переменной")
+# data |> select(any_of(variables_missing)) # берет те столбцы, названия которых есть в списке и в таблице. Если какого-то нет, то ошибки не будет
+
+# data |> select(`Группа`, starts_with("Гемоглобин"))
+# data |> select(!where(is.numeric)) # берет те столбцы, что не numeric (вместо ! можно писать -)
+```
+
+```{r}
+# data |> select(`Пол`, `Эритроциты_E1`, everything())
+
+# data |> relocate(contains("Эритроциты"), .after = `Группа крови`)
+
+# data |>
+#   select(
+#     `Эритроциты1` = `Эритроциты_E1`,
+#     `Эритроциты2` = `Эритроциты_E2`
+#   )
+
+# data |>
+#   rename(
+#     `Эритроциты1` = `Эритроциты_E1`,
+#     `Эритроциты2` = `Эритроциты_E2`
+#   )
+```
+
+
