@@ -97,17 +97,17 @@ data <- read_tsv("data/data_tsv.tsv", show_col_type = FALSE)
 data$Группа <- factor(data$Группа)
 data$Пол <- factor(data$Пол)
 data$`Группа крови` <- factor(
-    data$`Группа крови`,
-    levels = c("0 (I)", "A (II)", "B (III)", "AB (IV)")
+  data$`Группа крови`,
+  levels = c("0 (I)", "A (II)", "B (III)", "AB (IV)")
 )
 
-data 
+data
 ```
 
 ```{r}
 # data
 
-# data |> select(`Группа крови`, `Рост`) # выбор столбцов 
+# data |> select(`Группа крови`, `Рост`) # выбор столбцов
 
 # data |> select(starts_with("б")) # название столбца начинается с ...
 # data |> select(contains("_E1")) # столбец в названии содержит ...
@@ -142,6 +142,22 @@ data
 #     `Эритроциты1` = `Эритроциты_E1`,
 #     `Эритроциты2` = `Эритроциты_E2`
 #   )
+```
+
+```{r}
+# data |> slice(c(1, 3, 5)) # выбор строк
+
+# data |> slice(-c(1, 3, 5)) # исключение строк
+
+# data |> slice_head(n = 4)
+
+# data |> slice_tail(prop = 0.08) # prop - пропорция от всех строк в датафрейме
+
+# data |> slice_sample(prop = 0.05)
+
+# data |> slice_min(`Возраст`) # вывод строки с минимальным значением в этом столбце
+
+# data |> slice_max(`Возраст`) # вывод строки с максимальным значением в этом столбце
 ```
 
 
